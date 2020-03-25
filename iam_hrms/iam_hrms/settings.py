@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'employees',
-    'rest_framework_swagger'
+    'drf_yasg'
+    #'rest_framework_swagger'
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -130,10 +132,19 @@ REST_FRAMEWORK = {
 }
 
 SWAGGER_SETTINGS = {
-'JSON_EDITOR': True,
-'DEFAULT_PARSER_CLASSES': (
-          'rest_framework.parsers.FormParser',
-          'rest_framework.parsers.MultiPartParser',
-          'rest_framework.parsers.JSONParser',
-   )
+    'SECURITY_DEFINITIONS': {
+        'api_key': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': 'Authorization'
+        }
+    },
+    'USE_SESSION_AUTH': True,
+    'LOGIN_URL': '/gslab/iam/hrms/admin/login',
+    'JSON_EDITOR':True
+    #'LOGOUT_URL': 'gslab/iam/hrms/admin/:logout',
 }
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+
